@@ -48,7 +48,6 @@ const bfs = root => {
 }
 // bfs(tree)
 
-//
 //二叉树部分
 const bt = {
   val: 1,
@@ -80,19 +79,15 @@ const bt = {
   },
 }
 
-// module.exports = bt;
-
+//递归版
 //先序遍历
 const preorder = root => {
-  console.log(root.val)
-  if (root != null) {
-    if (root.left) {
-      preorder(root.left)
-    }
-    if (root.right) {
-      preorder(root.right)
-    }
+  if (!root) {
+    return
   }
+  console.log(root.val)
+  preorder(root.left)
+  preorder(root.right)
 }
 // preorder(bt)//1245367
 //中序遍历
@@ -105,7 +100,6 @@ const inorder = root => {
   inorder(root.right)
 }
 // inorder(bt) //4251637
-
 const postorder = root => {
   if (!root) {
     return
@@ -115,3 +109,58 @@ const postorder = root => {
   console.log(root.val)
 }
 // postorder(bt)//4526731
+
+//非递归版 面试官很贱喜欢考复杂的
+
+const preorder_not_recursion = root => {
+  if (!root) {
+    return
+  }
+  const stack = [root]
+  while (stack.length) {
+    const n = stack.pop() //第一个
+    console.log(n.val)
+    if (n.right) stack.push(n.right)
+    if (n.left) stack.push(n.left)
+  }
+}
+// preorder_not_recursion(bt) //1245367
+
+const inorder_not_recursion = root => {
+  console.log('~~')
+  if (!root) {
+    return
+  }
+  const stack = []
+  let p = root
+  while (stack.length || p) {
+    while (p) {
+      stack.push(p)
+      p = p.left
+    }
+    const n = stack.pop() //返回栈顶
+    console.log('~~', n.val)
+    p = n.right
+  }
+}
+// inorder_not_recursion(bt) //4251637
+
+const postorder_not_recursion = root => {
+  if (!root) {
+    return
+  }
+  const stack = [root]
+  const outputStack = []
+  while (stack.length) {
+    const n = stack.pop() //第一个
+    outputStack.push(n)
+    if (n.left) stack.push(n.left)
+    if (n.right) stack.push(n.right)
+  }
+  while (outputStack.length) {
+    const n = outputStack.pop()
+    console.log(n.val);
+  }
+}
+postorder_not_recursion(bt) //4526731
+//
