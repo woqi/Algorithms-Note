@@ -1,5 +1,6 @@
 ## leetcode 题
-由于不想翻太久md，每个md放置十道题目
+
+由于不想翻太久 md，每个 md 放置十道题目
 
 1.删除链表中节点
 
@@ -208,7 +209,7 @@ var trap = function (height) {
 ```
 
 8.两数之和 题目 1
-思路：nums去相亲者，target匹配的条件，字典建立一个介绍所储存相亲者的数字和下标
+思路：nums 去相亲者，target 匹配的条件，字典建立一个介绍所储存相亲者的数字和下标
 
 ```js
 var twoSum = function (nums, target) {
@@ -217,21 +218,112 @@ var twoSum = function (nums, target) {
     const n = nums[i]
     const n2 = target - n // 符合匹配条件的选手
     if (map.has(n2)) {
-      return [map.get(n2), i]// 返回符合条件对象的下标，自身下标
-    }else{
-      map.set(n,i)
+      return [map.get(n2), i] // 返回符合条件对象的下标，自身下标
+    } else {
+      map.set(n, i)
     }
   }
 }
 //时间复杂度 O(n)
 //空间复杂度 O(n)//线性
 ```
+
 另一种解法时间换空间 二分查找
 
 9. 无重复字符的最长子串 3
-解题思路 双指针维护一个滑动窗口，剪切子串，向右移，遇到重复就将左指针移动到重复字符的下一位，记录所有窗口长度，返回最大值
-```js
-var lengthOfLongestSubstring = function(s) {
+   解题思路 双指针维护一个滑动窗口，剪切子串，向右移，遇到重复就将左指针移动到重复字符的下一位，记录所有窗口长度，返回最大值
 
+```js
+var lengthOfLongestSubstring = function (s) {
+  let map = new Map(),
+    max = 0
+  for (let i = 0, j = 0; j < s.length; j++) {
+    if (map.has(s[j])) {
+      i = Math.max(map.get(s[j]) + 1, i)
+    }
+    max = Math.max(max, j - i + 1)
+    map.set(s[j], j)
+  }
+  return max
 }
 ```
+
+[解题注释](./字典.js)
+
+10 数组中第 k 个最大元素 题号 215
+实际是将k这一位放在最小堆的堆顶
+
+```js
+//解法1//小堆顶
+class minHeap {
+  constructor() {
+    this.heap = []
+  }
+  swap(i1, i2) {
+    const temp = this.heap[i1] //临时存储
+    this.heap[i1] = this.heap[i2]
+    this.heap[i2] = temp
+  }
+  getParentIndex(i) {
+    return (i - 1) >> 1 //二进制往右移 得到商
+  }
+  shiftUp(index) {
+    if (index == 0) {
+      return
+    } //到堆顶不要上移
+    const parentIndex = this.getParentIndex(index)
+    //不停和父节点交换直到小于父节点
+    if (this.heap[parentIndex] > this.heap[index]) {
+      this.swap(parentIndex, index)
+      this.shiftUp(parentIndex)
+    }
+  }
+  insert(value) {
+    this.heap.push(value)
+    this.shiftUp(this.heap.length - 1)
+  }
+  shiftDown(i) {
+    const leftIndex = 2 * i + 1
+    const rightIndex = 2 * i + 2
+    if (this.heap[leftIndex] < this.heap[i]) {
+      this.swap(leftIndex, i)
+      this.shiftDown(leftIndex)
+    }
+    if (this.heap[rightIndex] < this.heap[i]) {
+      this.swap(rightIndex, i)
+      this.shiftDown(rightIndex)
+    }
+  }
+  pop() {
+    this.heap[0] = this.heap.pop()
+    this.shiftDown(0)
+  }
+  getHeader() {
+    return this.heap[0]
+  }
+  size() {
+    return this.heap.length
+  }
+}
+var findKthLargest = function (nums, k) {
+  const h = new minHeap()
+  nums.forEach(n => {
+    h.insert(n)
+    if (h.size() > k) {
+      h.pop()
+    }
+  })
+  return h.getHeader()
+}
+```
+```js
+//解法2//js自带 最快
+var findKthLargest = function (nums, k) {
+  nums.sort((a, b) => b - a).slice(0, k)
+  return nums[k - 1]
+}
+//解法3
+//大堆顶好难，不会
+```
+
+
