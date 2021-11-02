@@ -164,3 +164,19 @@ var topKFrequent = function (nums, k) {
 对数组进行排序最小时间复杂度O(nlogn)
 
 [解答](./堆3-合并K个升序链表.js)
+
+3. 翻转二叉树 226
+
+//获取左右子树，递归左右子树，将翻转后的左右子树换位置放到根节点上
+
+```js
+var invertTree = function(root) {
+  if (!root) { return null }
+  return {
+      val: root.val,
+      left: invertTree(root.right),
+      right: invertTree(root.left)
+  }
+}
+
+```
