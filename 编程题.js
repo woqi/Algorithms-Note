@@ -48,9 +48,22 @@ const intersection = new Set([...mySet].filter(x => mySet2.has(x)))
 //输出的是mySet2没有的值
 const difference = new Set([...mySet].filter(x => !mySet2.has(x)))
 
-
-
-
+//性能更高
+let arr = [] //确定的对称数
+for (let i = 0; i <= 9; i++) {
+  arr.push(i + '')
+  arr.push(i + '' + i)
+}
+//装东西
+let arr2 = [...arr]
+for (let i = 1; i <= 9; i++) {
+  arr.forEach(item=>{
+    arr2.push(i+item+i)
+  })
+}
+arr2.shift()
+arr2.shift()
+console.log('arr---', arr2) //基本对称数
 
 
 //
