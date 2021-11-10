@@ -85,7 +85,7 @@ function findMax(arr) {
 
 //旋转数组
 function myShift(arr, k) {
-  k%=arr.length
+  k %= arr.length
   if (k >= Math.floor(arr.length / 2)) {
     arr.push(...arr.splice(0, arr.length - k))
   } else {
@@ -97,17 +97,14 @@ function myShift(arr, k) {
 
 //1-10000间所有对称数
 //思路1，暴力法，最少时间解决问题
-function isSymmetry(n){
+function isSymmetry(n) {
   return n.toString() === n.toString().split('').reverse().join('')
 }
 let arr = []
-for (let i = 1; i <=10000; i++) {
-  if(isSymmetry(i))arr.push(i)
-  
+for (let i = 1; i <= 10000; i++) {
+  if (isSymmetry(i)) arr.push(i)
 }
 // console.log(arr);//198个
-
-
 
 //思路2，如果一个数原本是对称的，在两边加相同的东西依然对称
 //内核，1-9，两位数,往这两种两边加方法
@@ -120,11 +117,32 @@ for (let i = 0; i <= 9; i++) {
 //装东西
 let arr2 = [...arr1]
 for (let i = 1; i <= 9; i++) {
-  arr1.forEach(item=>{
-    arr2.push(i+item+i)
+  arr1.forEach(item => {
+    arr2.push(i + item + i)
   })
 }
 arr2.shift()
 arr2.shift()
 // console.log('arr---', arr2) //基本对称数//198
 
+let a1 = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'D1', 'D2']
+let a2 = ['A', 'B', 'C', 'D']
+//合并为
+// let res = ['A1', 'A2', 'A', 'B1', 'B2', 'B', 'C1', 'C2', 'C', 'D1', 'D2', 'D']
+let res1 = []
+while (a1.length || a2.length) {
+  if (a1.length == 0) {
+    res1 = [...res1, ...a2]
+    break
+  }
+  if (a2.length == 0) {
+    res1 = [...res1, ...a1]
+    break
+  }
+  if (a2[0] == a1[0][0]) {
+    res1.push(a1.shift())
+  } else {
+    res1.push(a2.shift())
+  }
+}
+console.log('--', res1)
