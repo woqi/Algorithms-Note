@@ -95,3 +95,19 @@ function Two(nums, target) {
 }
 //时间复杂度和空间复杂度都是O(n)
 console.log('~~~~', Two(nums, target))
+
+let arr1 = []
+for (let i = 0; i <= 9; i++) {
+  arr1.push(i + '')
+  arr1.push(i + '' + i)
+}
+let arr2 = [...arr1]
+for (let i = 1; i <= 9; i++) {
+  arr1.forEach(item => {
+    arr2.push(i+item+i)
+  })
+}
+
+console.log('arr---', arr2) 
+
+//
