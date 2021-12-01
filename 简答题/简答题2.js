@@ -80,21 +80,31 @@ map.set(1, 'dd')
 
 let nums = [2, 7, 11, 15],
   target = 13
+// let nums = [3, 3,],
+// target = 6
 function Two(nums, target) {
   const obj = {}
   for (let i = 0; i < nums.length; i++) {
     let a = nums[i]
     let b = target - a
+    // console.log('!!obj---',obj)
     if (obj[b] != undefined) {
       return [obj[b], i]
     } else {
+      console.log('@@obj---',obj)
       obj[a] = i
     }
   }
+  
   return null
 }
 //时间复杂度和空间复杂度都是O(n)
 console.log('~~~~', Two(nums, target))
+
+// let nums1 = [2, 7, 11, 15]
+// for (let index = 0; index < nums1.length; index++) {
+//   console.log(nums1[index])
+// }
 
 let arr1 = []
 for (let i = 0; i <= 9; i++) {

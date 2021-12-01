@@ -42,7 +42,7 @@ var reverseList = function (head) {
 //没有矩阵，空间复杂度也为 O(1)
 ```
 
-3.两数相加
+3.两数相加 2
 解题思路遍历两个被相加的链表，建立空链表，模拟相加操作，将个位数追加到新链表上，十位数留到下一个去相加
 
 ```js
@@ -154,6 +154,19 @@ var hasCycle = function (head) {
 var intersection = function (nums1, nums2) {
   let res = new Set([...nums1].filter(x => new Set(nums2).has(x)))
   console.log([...res])
+  return [...res]
+}
+```
+```js
+var intersection = function (nums1, nums2) {
+  if (nums1.length > nums2.length) [nums1, nums2] = [nums2, nums1]
+  let set = new Set(nums1)
+  let res = new Set()
+  for (let i = 0; i < nums2.length; i++) {
+    if (set.has(nums2[i])) {
+      res.add(nums2[i])
+    }
+  }
   return [...res]
 }
 ```

@@ -180,5 +180,66 @@ var invertTree = function(root) {
 }
 
 ```
-
 4.旋转数组 189
+
+5.爬楼梯 70
+定义子问题f(n) = f(n-1) + f(n-2)
+反复执行 从2循环到n，执行上述公式
+```js
+//爬楼梯
+var clibStairs = function (n) {
+  if (n < 2) {
+    return 1
+  }
+  const dp = [1, 1]
+  for (let i = 2; i < n; i++) {
+    dp[i] = dp[i - 1] + dp[i - 2]
+  }
+  return dp[n]
+}
+//时间复杂度 o(n)
+//空间复杂度 o(n)
+
+//优化
+var clibStairs2 = function (n) {
+  if (n < 2) {
+    return 1
+  }
+  let dp0 = 1
+  let dp1 = 1
+  for (let i = 2; i < n; i++) {
+    const tmp = dp0
+    dp0 = dp1
+    dp1 = dp1 + tmp 
+  }
+  return dp1
+}
+//时间复杂度 o(n)
+//空间复杂度 o(n)
+```
+6.打家劫舍 198
+```js
+function rob(nums){
+  let len = nums.length
+  if(len===0)return
+  const dp = new Array(len + 1)
+  dp[0] = 0
+  dp[1] = nums[0]
+  for(let i=2;i<=len; i++) {
+    dp[i] = Math.max(dp[i-2]+nums[i-1],dp[i-1])
+  }
+  return dp[len]
+}
+```
+7.买卖股票的最佳时机II 122
+```js
+var maxProfit = function (prices) {
+  let profit = 0
+  for (let i= 1;i<prices.length;i++){
+    if(prices[i]>prices[i-1]){
+      profit+=prices[i]-prices[i-1]
+    }
+  }
+  return profit
+}
+```
