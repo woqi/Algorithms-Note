@@ -52,7 +52,7 @@ function clone(data) {
     return new data.constructor(data)
   }
 }
-let a = [{a:12,b:2},{a:6,b:7}]
+let a = [{a:12,b:2},{a:6,b:7},{c:function a(){return '123'}}]
 let b = clone(a)
 b[0].b++
 console.log(a)

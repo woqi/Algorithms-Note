@@ -181,6 +181,17 @@ var invertTree = function(root) {
 
 ```
 4.旋转数组 189
+```js
+function shift(arr, k) {
+  k %= arr.length
+  if (k >= Math.floor(arr.length / 2)) {
+    arr.push(...arr.splice(0, arr.length - k))
+  } else {
+    arr.unshift(...arr.splice(arr.length - k, k))
+  }
+  return arr
+}
+```
 
 5.爬楼梯 70
 定义子问题f(n) = f(n-1) + f(n-2)

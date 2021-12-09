@@ -5,7 +5,9 @@
 // let arr = new Array(10)
 // arr = arr.fill(0).map(_ => Math.floor(Math.random() * 100+ 1))
 // let arr = [19, 68, 6, 65, 65, 58, 73, 100, 94, 95]
+let arr = [2, 10, 3, 4, 5, 11, 10, 11, 20]
 
+//疑问
 function fn(arr) {
   const map = new Map()
   arr.sort((a, b) => a - b)
@@ -16,33 +18,24 @@ function fn(arr) {
       map.set(n, [item])
       // console.log('map---',map)
     } else {
-      //大佬们 去重是放在这里还是在一开始就去重 如何减少时间与空间复杂度呢
+      //去重是放在这里还是在一开始就去重 如何减少时间与空间复杂度呢
       f.push(item)
       map.set(n, f)
     }
   })
   console.log('dier---', Array.from(map.values()))
-  // [19,68, 6, 65,65,58,73,100,94,95]
-  //
 }
 
-let arr = [19, 68, 6, 65, 65, 58, 73, 100, 94, 95]
-function fn2(arr) {
-  const map = {}
-  arr.forEach(item => {
-    const n = Math.floor(item / 10)
-    map[n] ? map[n].push(item) : (map[n] = item)
-  })
-  return Object.values(map)
-}
-// let cc = fn2(arr)
-//
+console.time()
+let aaa = fn3(arr)
+console.timeEnd()
+
+//解法1
 function runjs(arr) {
   arr.sort((a, b) => a - b)
-  let newArr = [...(new Set(arr))]
-  console.log(newArr)
+  let newArr = [...new Set(arr)]
   const map = new Map()
-  newArr.forEach(item=>{
+  newArr.forEach(item => {
     let n = Math.floor(item / 10)
     const f = map.get(n)
     if (!f) {
@@ -54,13 +47,29 @@ function runjs(arr) {
   })
   return Array.from(map.values())
 }
+//解法2
+function fn3(arr) {
+  let json = {}
+  arr.forEach(item => {
+    let n = Math.floor(item / 10)
+    if (!json[n]) {
+      json[n] = {}
+    }
+    json[n][item] = true
+  })
+  let result = []
+  for (const k1 in json) {
+    let narr = []
+    for (const k2 in json[k1]) {
+      narr.push(k2)
+    }
+    narr.sort()//obj key是字符串
+    result.push(narr.map(Number))
+  }
+  console.log('~~', result)
+}
 
-console.time()
-// let aaa = runjs(arr)
-console.log('jg---',runmy(arr))
-console.timeEnd()
-console.log(console.time() - console.timeEnd())
-
+//分而治之报错
 function runmy(arr) {
   const map = {}
   const insetNum = (list, num) => {
@@ -85,8 +94,9 @@ function runmy(arr) {
   }
   arr.forEach(num => {
     const index = Math.floor(num / 10)
-    map[index] ? insetNum(map[index], num) : map[index] = [num]
+    map[index] ? insetNum(map[index], num) : (map[index] = [num])
   })
   return Object.values(map)
 }
+
 //

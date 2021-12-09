@@ -15,7 +15,14 @@ function add(...args1) {
   }
   return fn
 }
-
+// function add(...args){
+//   let sum = args.reduce((acc,cur)=>acc+cur);
+//   return function(...nextArgs){
+//   return nextArgs.length?add(sum,...nextArgs):sum
+//   }
+//   }
+let aa = add(1)(2,(3))(5)
+//
 //set基础操作
 let mySet = new Set()
 mySet.add(1)
@@ -81,7 +88,8 @@ function findMax(arr) {
   //合并
   return leftMax > rightMax ? leftMax : rightMax
 }
-// console.log(findMax(data))
+console.log(findMax(data))//
+//
 
 //旋转数组
 function myShift(arr, k) {
@@ -93,7 +101,8 @@ function myShift(arr, k) {
   }
   return arr
 }
-// console.log('!!', myShift([-1,-100,3,99], 2))
+console.log('!!', myShift([-1,-100,3,99], 2))
+//
 
 //1-10000间所有对称数
 //思路1，暴力法，最少时间解决问题
