@@ -1,6 +1,6 @@
 ### 1.Object.defineProperty 和 Proxy 区别
 proxy 可以全面监听数据的变化，深度监听，可以知道数组变化
-Object.defineProperty 无法监听数组修改
+Object.defineProperty 无法监听数组修改，修改了数组的7个api
 
 ```js
 Object.defineProperty(obj, 'foo', {
@@ -21,3 +21,4 @@ Object.defineProperty(obj, 'foo', {
   },
 })
 ```
+

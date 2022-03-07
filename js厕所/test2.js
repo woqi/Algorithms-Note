@@ -10,7 +10,6 @@
 let data = [29, 8, 17, 6,3,, 19, 27, 81, 2, -6]
 function findMax1(arr) {
   return arr.reduce((pre,cur)=>{
-
     return Math.max(pre, cur)
   })
 
