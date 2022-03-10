@@ -4,7 +4,6 @@
 // console.log(a.prototype, b.prototype, c.prototype)
 // console.log(a.constructor, b.constructor, c.constructor)
 // console.log(a.__proto__, b.__proto__, c.__proto__)
-
 // console.log(a)
 
 let data = [29, 8, 17, 6,3,, 19, 27, 81, 2, -6]
@@ -14,7 +13,6 @@ function findMax1(arr) {
   })
 
 }
-
 
 function findMax2(arr) {
   return Math.max(...arr)

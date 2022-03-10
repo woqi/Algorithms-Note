@@ -1,7 +1,7 @@
-promise默认处于pending---fulfilled
-              pending---rejected
+promise**默认处于**pending---fulfilled
+                   pending---rejected
 
-实现promise
+### 实现promise
 ```js
 const Pending = 'pending'
 const Fulfilled = 'fulfilled'
@@ -75,7 +75,7 @@ function resolvePromise(proimis2, x, resolve, reject) {
 module.exports = MyPromise
 ```
 
-- race
+### race
 ```js
 Promise.myRace = arr => {
   return new Promise((resolve, reject) => {
@@ -83,7 +83,7 @@ Promise.myRace = arr => {
   })
 }
 ```
-- all
+### all（结合事件循环）
 ```js
 Promise.myall = promises => {
   let complete = 0
@@ -101,3 +101,4 @@ Promise.myall = promises => {
   })
 }
 ```
+### 如何取消promise

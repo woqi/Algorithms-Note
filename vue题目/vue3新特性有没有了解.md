@@ -1,3 +1,4 @@
+### vue3做了哪些优化？
 虚拟dom重写，生成的虚拟dom信息更详细，
 createComponentVNode(//增加第四个参数)
 
@@ -29,12 +30,20 @@ composition Api 类似于hooks
 ### 连环问 composition Api
 
 
-### vue响应式原理
+### vue响应式原理、你知道vue双向数据绑定原理
+MVVM：数据变化视图更新，视图变化数据更新，
 proxy 可以全面监听数据的变化，深度监听，可以知道数组变化
 Object.defineProperty 无法监听数组修改，修改了数组的7个api
 
-data通过observer转换为getter、setter的形式追踪变化，watcher读取数据触发getter，将watcher添加到依赖中，
-数据变化时会触发setter，setter通知依赖，依赖通知watcher，watcher通知外部组件更新
+data通过observer转换为getter、setter的形式追踪变化，
+watcher读取数据触发getter，将watcher添加到依赖中，
+数据变化时会触发setter，
+setter通知依赖，
+依赖通知watcher，
+watcher通知外部组件更新
 
-### 你知道vue双向数据绑定原理
-view视图层与 model数据层的同步
+
+
+
+
+
