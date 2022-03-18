@@ -1,3 +1,4 @@
+//拉钩全栈compose笔记
 function comp(f, g) {
   return function (value) {
     return f(g(value))
@@ -70,5 +71,5 @@ let pay = control((money)=> {
 pay(5)
 pay(5)
 pay(5)
-pay(5)
+pay(5) // 第四次无打印
 //

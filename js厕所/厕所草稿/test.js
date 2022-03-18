@@ -152,7 +152,7 @@ const d = () => {
   console.log('q')
 }
 //点击时候使用 截流
-const throttle = (fn, time) => {
+const throttle2 = (fn, time) => {
   let timer = null
   return (...args) => {
     if (timer) {

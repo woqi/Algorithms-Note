@@ -6,6 +6,7 @@
 // console.log(a.__proto__, b.__proto__, c.__proto__)
 // console.log(a)
 
+/* 查找最大数 */
 let data = [29, 8, 17, 6,3,, 19, 27, 81, 2, -6]
 function findMax1(arr) {
   return arr.reduce((pre,cur)=>{

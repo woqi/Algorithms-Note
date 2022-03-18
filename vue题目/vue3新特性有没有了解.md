@@ -28,6 +28,12 @@ render(){
 composition Api 类似于hooks
 
 ### 连环问 composition Api
+- 为什么用composition Api
+模板数据来源清晰
+命名空间明确
+性能更好
+更好的适配TypeScript
+
 
 
 ### vue响应式原理、你知道vue双向数据绑定原理

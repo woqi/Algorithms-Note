@@ -111,7 +111,6 @@ const postorder = root => {
 // postorder(bt)//4526731
 
 //非递归版 面试官很贱喜欢考复杂的
-
 const preorder_not_recursion = root => {
   if (!root) {
     return
