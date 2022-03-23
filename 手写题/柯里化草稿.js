@@ -1,4 +1,5 @@
 let a = add2(2, 3)(1)
+
 function argsSum(args) {
   return args.reduce((pre, cur) => {
     return pre + cur
@@ -16,7 +17,6 @@ function add(...args1) {
   }
   return fn
 }
-
 function add2() {
   let args = [].slice.call(arguments)
   let fn = function () {
@@ -39,7 +39,9 @@ function add3() {
   }
   return fn
 }
-let ab = add3(2, 3)(1)
+let ab = add3(2)(3)(1)
+let cd = add3(2,3,1)
+
 console.log('jij----', ab)
 //
 const my_instanceof = (a, b) => {
@@ -51,15 +53,4 @@ const my_instanceof = (a, b) => {
     p = p.__proto__
   }
   return false
-}
-function clone(data){
-  if(typeof data === 'symbol'){
-    
-  }
-}
-let obj = {
-  name:'dsa',
-  show:()=>{
-    console.log('show',this)
-  }
 }

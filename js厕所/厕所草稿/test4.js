@@ -50,4 +50,23 @@ function someFunc3(arr) {
   }
   loop()
 }
-someFunc3([12, 23, 34])
+// 可删
+// someFunc3([12, 23, 34])
+
+/*
+sum(1,2,3)
+sum(1)(2)(3)
+sum(1,2)(3)//6
+*/ 
+function sum(){
+function fn(){return 'fn-qaq'}
+fn.toString = function(){
+  return 'fn.toString'
+}
+return fn
+}
+// let a = sum(1)(2)(3) //6
+let b = sum()
+console.log('b-',b())
+
+//
