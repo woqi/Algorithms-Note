@@ -42,11 +42,11 @@ const bfs = root => {
   const q = [root]
   while (q.length > 0) {
     const n = q.shift() //队头c出队
-    console.log(n.val)
+    console.log('bfs--',n.val)
     n.children.forEach(item => q.push(item))
   }
 }
-// bfs(tree)
+bfs(tree)
 
 //二叉树部分
 const bt = {

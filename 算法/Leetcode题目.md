@@ -2,7 +2,7 @@
 
 由于不想翻太久 md，每个 md 放置十道题目
 
-1.删除链表中节点
+### 1.删除链表中节点
 
 思路 无法直接获取被删除节点的上一个节点，
 但是可以将被删除节点转移到下一个节点后直接删除下一个节点
@@ -16,7 +16,7 @@ var deleteNode = function (node) {
 //没有矩阵，空间复杂度也为 O(1)
 ```
 
-2.反转链表，题号 206
+### 2.反转链表，题号 206
 
 思路 反转两个节点：n+1.next = n
 此时可以双指针遍历链表 重复以上操作
@@ -42,7 +42,7 @@ var reverseList = function (head) {
 //没有矩阵，空间复杂度也为 O(1)
 ```
 
-3.两数相加 2
+### 3.两数相加 2
 解题思路遍历两个被相加的链表，建立空链表，模拟相加操作，将个位数追加到新链表上，十位数留到下一个去相加
 
 ```js
@@ -53,7 +53,6 @@ var addTwoNumbers = function (l1, l2) {
   let p2 = l2
   let p3 = l3
   let carry = 0 //记录十位数上的数字
-
   while (p1 || p2) {
     //p1或者p2有值 就继续遍历链表
     const v1 = p1 ? p1.val : 0
@@ -102,8 +101,24 @@ var addTwoNumbers = function (l1, l2) {
   return dummy.next
 }
 ```
+```js
+const add = (a,b)=>{
+  const maxLength = Math.max(a.length,b.length)
+  let overflow = false
+  let sum = ''
+  for(let i = 1; i<= maxLength;i++){
+    const ai = a[a.length-i] || '0'
+    const ai = b[b.length-i] || '0'
+    let ci = parseInt(ai) + parseInt(bi) + overflow ? 1 : 0
+    overflow = ci>=10
+    sum = ci + sum
+  }
+  sum = overflow ? '1' + sum :sum
+  return sum
+}
+```
 
-4. 删除排序链表中的重复元素，题号 83
+### 4. 删除排序链表中的重复元素，题号 83
 
 思路：因为链表是有序的，所以重复元素一定相邻，
 遍历链表发现当前元素和下一个元素相同就删除下一个元素,
@@ -125,7 +140,7 @@ var deleteDuplicates = function (head) {
 //空间复杂度：O(1)。
 ```
 
-5. 环形链表，题号 141
+### 5. 环形链表，题号 141
    解题思路：有一快一慢两个指针遍历链表，指针可以相逢，说明有环，返回 true，两个指针不相逢就说明没有环，返回 false
 
 ```js
@@ -146,7 +161,7 @@ var hasCycle = function (head) {
 //空间复杂度：O(1)。因无线性增长结构，矩阵，列表
 ```
 
-6. 两个数组的交集 题号 349
+### 6. 两个数组的交集 题号 349
    两种解法一个是 Set 一个是 Map
 
 ```js
@@ -192,7 +207,7 @@ var intersection = function (nums1, nums2) {
 //空间复杂度指临时变量内存消耗 O(m)
 ```
 
-7. 接雨水 题号 42
+### 7. 接雨水 题号 42
    方法 1：双指针
 
 ```js
@@ -221,7 +236,7 @@ var trap = function (height) {
 }
 ```
 
-8.两数之和 题目 1
+### 8. 两数之和 题目 1
 思路：nums 去相亲者，target 匹配的条件，字典建立一个介绍所储存相亲者的数字和下标
 
 ```js
@@ -263,7 +278,7 @@ var lengthOfLongestSubstring = function (s) {
 
 [解题注释](./字典.js)
 
-10 数组中第 k 个最大元素 题号 215
+### 10. 数组中第 k 个最大元素 题号 215
 实际是将k这一位放在最小堆的堆顶
 
 ```js
@@ -339,4 +354,11 @@ var findKthLargest = function (nums, k) {
 //大堆顶好难，不会
 ```
 
-
+从4.1-4.4没有一天是不骂人的
+我每天都给我妈告状骂她
+她骂的事情中心思想无非就是这么多人没人陪她孩子
+她都6岁了 
+我这个年纪已经能自主阅读了
+还要人陪？
+她小孩也爱倒是非 
+看我们三个被骂很开心

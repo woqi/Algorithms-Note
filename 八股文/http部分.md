@@ -11,7 +11,7 @@
 
 [答案](https://www.zhihu.com/people/codefalling/posts)
 
-什么是csrf
+### 什么是csrf
 攻击者诱导受害者进入第三方网站，在第三方网站中，向被攻击网站发送跨站请求。利用受害者在被攻击网站已经获取的注册凭证，绕过后台的用户验证，达到冒充用户对被攻击的网站执行某项操作的目的。
 
 受害者登录a.com，并保留了登录凭证（Cookie）。
@@ -30,7 +30,7 @@ CSRF的特点
 CSRF通常是跨域的，因为外域通常更容易被攻击者掌控。但是如果本域下有容易被利用的功能，比如可以发图和链接的论坛和评论区，攻击可以直接在本域下进行，而且这种攻击更加危险。
 解决方法
 1.使用Origin Header、referer header确定来源域名
-2.设置Referrer Policy的方法有三种：
+2.设置Referer Policy的方法有三种：
 在CSP设置
 页面头部增加meta标签
 a标签增加referrerpolicy属性

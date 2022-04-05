@@ -95,5 +95,6 @@ const preorder = root => {
 }
 let res = preorder(tree)
 console.log('res--', res)
-//
+//总结 只有递归不会改变顺序但是会爆栈
+//循环比递归好一些
 
