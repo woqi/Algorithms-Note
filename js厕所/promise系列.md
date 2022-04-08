@@ -1,7 +1,11 @@
-promise**默认处于**pending---fulfilled
-                   pending---rejected
+### promise
 
-### 实现promise
+**默认处于**
+pending---fulfilled
+pending---rejected
+
+### 实现 promise
+
 ```js
 const Pending = 'pending'
 const Fulfilled = 'fulfilled'
@@ -29,7 +33,11 @@ class MyPromise {
   }
   then(successCallback, failCallback) {
     successCallback = successCallback ? successCallback : v => v
-    failCallback = failCallback ? failCallback : r => {throw r}
+    failCallback = failCallback
+      ? failCallback
+      : r => {
+          throw r
+        }
     let proimis2 = new MyPromise((resolve, reject) => {
       if (this.status === Fulfilled) {
         setTimeout(() => {
@@ -40,15 +48,15 @@ class MyPromise {
         setTimeout(() => {
           let x = failCallback(this.reason)
           resolvePromise(proimis2, x, resolve, reject)
-        },0)
+        }, 0)
       } else {
-        this.successCallback.push(()=>{
+        this.successCallback.push(() => {
           setTimeout(() => {
             let x = successCallback(this.value)
             resolvePromise(proimis2, x, resolve, reject)
           }, 0)
         })
-        this.failCallback.push(()=>{
+        this.failCallback.push(() => {
           setTimeout(() => {
             let x = failCallback(this.value)
             resolvePromise(proimis2, x, resolve, reject)
@@ -59,7 +67,7 @@ class MyPromise {
     return proimis2
   }
   catch(errCallback) {
-    return this.then(null,errCallback)
+    return this.then(null, errCallback)
   }
 }
 function resolvePromise(proimis2, x, resolve, reject) {
@@ -76,6 +84,7 @@ module.exports = MyPromise
 ```
 
 ### race
+
 ```js
 Promise.myRace = arr => {
   return new Promise((resolve, reject) => {
@@ -83,7 +92,9 @@ Promise.myRace = arr => {
   })
 }
 ```
+
 ### all（结合事件循环）
+
 ```js
 Promise.myall = promises => {
   let complete = 0
@@ -92,7 +103,7 @@ Promise.myall = promises => {
     for (let i = 0; i < promises.length; i++) {
       promises[i].then(res => {
         complete++
-        result[i]= res
+        result[i] = res
         if (complete == promises.length) {
           resolve(result)
         }
@@ -101,4 +112,5 @@ Promise.myall = promises => {
   })
 }
 ```
-### 如何取消promise
+
+### 如何取消 promise
