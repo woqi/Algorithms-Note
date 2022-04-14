@@ -34,8 +34,6 @@ composition Api 类似于hooks
 性能更好
 更好的适配TypeScript
 
-
-
 ### vue响应式原理、你知道vue双向数据绑定原理
 MVVM：数据变化视图更新，视图变化数据更新，
 proxy 可以全面监听数据的变化，深度监听，可以知道数组变化

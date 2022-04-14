@@ -42,3 +42,17 @@ function levelOrder(obj) {
 }
 console.log('~~!!~~', levelOrder(obj))
 
+function delegate(element, eventType, selector, fn) {
+  element.addEventListener(eventType, e => {
+    let el = e.target
+    while (!el.matches(selector)) {
+      if (element === el) {
+        el = null
+        break
+      }
+      el = el.parentNode //点击的不是element就看父级
+    }
+    el && fn.call(el, e, el)
+  })
+  return element
+}

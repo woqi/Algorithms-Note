@@ -107,4 +107,19 @@ v-model通过Object.defineProperty API给data创建getter、setter，用于监�
 v-on通过template compiler给DOM添加事件监听，DOM input值改变就会修改data
 **25k+ compiler如何实现**
 
-### 
+### 通信
+父子：使用props和事件
+爷孙： 
+1.两次父子通信实现
+2.provid + inject
+任意：
+使用eventBus = new Vue(),事件多难以维护
+vuex、pinia
+
+### Vue 的父组件和子组件生命周期钩子执行顺序是什么
+渲染
+父beforeCreate-->父created-->父beforeMount-->子beforeCreate-->子created-->子beforeMount-->子mounted-->父mounted
+子组件更新
+父beforeUpdate->子beforeUpdate->子updated->父updated
+销毁
+父beforeDestroy->子beforeDestroy->子destroyed->父destroyed
