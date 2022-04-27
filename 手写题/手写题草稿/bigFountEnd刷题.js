@@ -1,3 +1,4 @@
+//草稿
 class EventEmitter1 {
   constructor() {
     this.watcher = new Map()
@@ -29,7 +30,6 @@ class EventEmitter1 {
     }
   }
 }
-
 class EventEmitter {
   constructor() {
     this.map = new Map()
@@ -117,12 +117,14 @@ function throttlePromises2(funcs, max) {
     function fn() {
       while (count < max && queue.length > 0) {
         const first = queue.shift()
-        count ++ 
-        first().then(res=>{
-          count --
-          results.push(res)
-          fn()
-        }).catch(err=>reject(err))
+        count++
+        first()
+          .then(res => {
+            count--
+            results.push(res)
+            fn()
+          })
+          .catch(err => reject(err))
       }
       if (results.length === funcs.length) {
         resolve(results)
@@ -131,7 +133,37 @@ function throttlePromises2(funcs, max) {
     fn()
   })
 }
-throttlePromises2([fn1, fn2, fn3, fn4], 2).then(data => {
-  console.log('**-', data)
-})
+// throttlePromises2([fn1, fn2, fn3, fn4], 2).then(data => {
+//   console.log('**-', data)
+// })
+
+function flatten1(arr) {
+  var res = []
+  for (var i = 0; i < arr.length; i++) {
+    if (Array.isArray(arr[i])) {
+      res = res.concat(flatten(arr[i]))
+    } else {
+      res.push(arr[i])
+    }
+  }
+  return res
+}
+function flatten2(arr) {
+  while (arr.some(item => Array.isArray(item))) {
+    arr = [].concat(...arr)
+  }
+  return arr
+}
+function flatten(arr) {
+  return arr.reduce((pre, next) => {
+    return pre.concat(Array.isArray(next) ? flatten(next) : next)
+  }, [])
+}
+// flatten([1,[2],[3,[4]]])
+// flatten([1,[2],[3,[4]]])
+// flatten([1,[2],[3,[4]]])
+console.time()
+let hehe = flatten([1, 2, [3, 4, [5, 6, [7, 8, [9, 10]]]]])
+console.timeEnd()
+
 //

@@ -1,5 +1,6 @@
 const obj = { foo: 123 }
 
+
 function autorun (update) {
   const wrappedUpdate = () => {
     activeUpdate = wrappedUpdate

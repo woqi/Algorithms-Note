@@ -1,4 +1,5 @@
 ### 实现 pipe()
+
 https://bigfrontend.dev/zh/problem/what-is-composition-create-a-pipe
 
 ```js
@@ -19,6 +20,7 @@ const pipe = fn => x => fn.reduce((a, b) => b(a), x)
 ```
 
 ### 实现 clearAllTimeout
+
 https://bigfrontend.dev/zh/problem/implement-clearAllTimeout
 
 ```js
@@ -38,11 +40,13 @@ function clearAllTimeout() {
 ```
 
 ### 实现 Event Emitter
+
 https://bigfrontend.dev/zh/problem/create-an-Event-Emitter
+
 ```js
 //测试用例
 const emitter = new Emitter()
-const sub1  = emitter.subscribe('event1', callback1)
+const sub1 = emitter.subscribe('event1', callback1)
 const sub2 = emitter.subscribe('event2', callback2)
 // 同一个callback可以重复订阅同一个事件
 const sub3 = emitter.subscribe('event1', callback1)
@@ -50,7 +54,7 @@ emitter.emit('event1', 1, 2)
 // callback1 会被调用两次
 sub1.release()
 sub3.release()
-// 现在即使'event1'被触发, 
+// 现在即使'event1'被触发,
 // callback1 也不会被调用
 class EventEmitter {
   constructor() {
@@ -63,56 +67,87 @@ class EventEmitter {
     } else {
       map.set(eventName, [...map.get(eventName), callback])
     }
-    return {release:function(){
-      map.get(eventName).map((item,idx)=>{
-        if(item===callback){
-          map.get(eventName).splice(idx,1)
-        }else{
-          return item
-        }
-      })
-    }}
+    return {
+      release: function () {
+        map.get(eventName).map((item, idx) => {
+          if (item === callback) {
+            map.get(eventName).splice(idx, 1)
+          } else {
+            return item
+          }
+        })
+      }
+    }
   }
   emit(eventName, ...args) {
     let map = this.map
-    if(map.has(eventName)){
-      map.get(eventName).forEach(e=>{
-        e.apply(this,args)
+    if (map.has(eventName)) {
+      map.get(eventName).forEach(e => {
+        e.apply(this, args)
       })
     }
   }
 }
 ```
 
+### 实现 Array.flat()
 
-### 实现Array.flat()
 ```js
 //测试用例
-flat([1,[2],[3,[4]]])  
-flat([1,[2],[3,[4]]], 1)  
-flat([1,[2],[3,[4]], 2)  
-flat([1,2,[3,4,[5,6,[7,8,[9,10]]]]], Infinity)   
+flatten([1,[2],[3,[4]]])
+flatten([1,[2],[3,[4]]])
+flatten([1,[2],[3,[4]])
+flatten([1,2,[3,4,[5,6,[7,8,[9,10]]]]])
+//解法1 递归
+function flatten(arr){
+  var res = []
+  for(var i = 0; i<arr.length; i++){
+    if(Array.isArray(arr[i])){
+      res = res.concat(flatten(arr[i]))
+    }else{
+      res.push(arr[i])
+    }
+  }
+  return res
+}
+//2.while 最快
+function flatten(arr){
+  while (arr.some(item=>Array.isArray(item))) {
+    arr = [].concat(...arr)
+  }
+  return arr
+}
+//3.reduce //最慢
+function flatten(arr) {
+  return arr.reduce((pre, next) => {
+    return pre.concat(Array.isArray(next) ? flatten(next) : next)
+  }, [])
+}
 ```
 
-### Promise reject的时候自动retry 
+### Promise reject 的时候自动 retry
+
 https://bigfrontend.dev/zh/problem/retry-promise-on-rejection
+
 ```js
 /**
  * @param {() => Promise<any>} fetcher
  * @param {number} count
  * @return {Promise<any>}
  */
-function (fetcher, count){
-  return fetcher().catch(err=>{
-    if(count===0){
+function fetchWithAutoRetry(fetcher, count) {
+  return fetcher().catch(err => {
+    if (count === 0) {
       throw err
-    }else{
-      return fetchWithAutoRetry(fetcher,count-1)
+    } else {
+      return fetchWithAutoRetry(fetcher, count - 1)
     }
   })
 }
 ```
-### Promise 截流 92
+
+### Promise 截流
+
 https://bigfrontend.dev/zh/problem/throttle-Promises
 
 ```js
@@ -124,12 +159,14 @@ function throttlePromises(funcs, max) {
     function fn() {
       while (count < max && queue.length > 0) {
         const first = queue.shift()
-        count ++ 
-        first().then(res=>{
-          count --
-          results.push(res)
-          fn()
-        }).catch(err=>reject(err))
+        count++
+        first()
+          .then(res => {
+            count--
+            results.push(res)
+            fn()
+          })
+          .catch(err => reject(err))
       }
       if (results.length === funcs.length) {
         resolve(results)
@@ -139,7 +176,68 @@ function throttlePromises(funcs, max) {
   })
 }
 /*测试*/
+function fn1() {
+  return new Promise((res, rej) => {
+    res('fn1~')
+  })
+}
+function fn2() {
+  return new Promise((res, rej) => {
+    res('fn2~')
+  })
+}
+function fn3() {
+  return new Promise((res, rej) => {
+    res('fn3~')
+  })
+}
+function fn4() {
+  return new Promise((res, rej) => {
+    res('fn4~')
+  })
+}
 throttlePromises([fn1, fn2, fn3, fn4], 2).then(data => {
   console.log('**-', data)
 })
+```
+
+### 返回 Dom 最大高度
+
+https://bigfrontend.dev/zh/problem/get-DOM-tree-height/discuss
+
+```js
+function getHeight(tree) {
+  if (!tree) return 0
+  let height = 0,
+    q = [[tree, 1]]
+  while (q.length) {
+    const [node, h] = q.shift()
+    height = Math.max(h, height)
+    for (let child of node.children) {
+      q.push([child, h + 1])
+    }
+  }
+  return height
+}
+```
+
+### 最多重复出现的字符串
+
+https://bigfrontend.dev/zh/problem/most-frequently-occurring-character
+
+```js
+function count(str) {
+  const map = new Map()
+  const result = []
+  for (const c of str) {
+    map.set(c, (map.get(c) || 0) + 1)
+  }
+  const max = Matn.max(...map.values())
+  for (const [key, value] of map) {
+    if (value === max) {
+      result.push(key)
+    }
+  }
+  return result.length === 1 ? result[0] : result
+}
 ```
