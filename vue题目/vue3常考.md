@@ -8,6 +8,12 @@ javascript引擎在解析时希望对象的结构越稳定越好
 直接操作对象的属性，颗粒度较小
 无法监听数组修改，修改了数组的7个api
 
+vue2响应式原理的弊端 
+响应式过程需要递归，消耗较大
+新加或删除属性无法监听
+Map、Set、Class等无法响应
+修改语法有限制
+
 ```js
 Object.defineProperty(obj, 'foo', {
   //读取key值时，没法读取，因设置不允许迭代
@@ -72,13 +78,6 @@ proxy 可以全面监听数据的变化，深度监听，可以知道数组变�
 Object.defineProperty 无法监听数组修改，修改了数组的7个api
 vue的响应式是由Object.defineProperty、proxy完成的
 
-vue2响应式原理的弊端 
-响应式过程需要递归，消耗较大
-新加或删除属性无法监听
-Map、Set、Class等无法响应
-修改语法有限制
-
-
 ### 双向数据绑定原理
 vue的双向绑定是v-modle语法糖实现 
 例如 input事件中`v-bind:value + v-on:input`
@@ -89,7 +88,7 @@ vue的双向绑定是v-modle语法糖实现
 1. v-bind怎么实现
 通过Object.defineProperty API给data创建getter、setter，用于监听data变化，data变化改变ui
 2. v-on怎么实现
-通过template compiler给DOM添加事件监听，DOM input值改变去修改data
+通过template compiler给DOM添加事件监听，DOM input值改变引起data改变
 
 #### 什么是单向数据流
 数据更新引发视图更新
