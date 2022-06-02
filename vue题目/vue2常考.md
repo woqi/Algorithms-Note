@@ -35,6 +35,7 @@
 
 - beforeDestroy vue2 / beforeUnmount vue3
   在卸载组件实例之前调用。在这个阶段，实例仍然是完全正常的。
+
 - destroyed vue2 / unmounted vue3
   卸载组件实例后调用。调用此钩子时，组件实例的所有指令都被解除绑定，所有事件侦听器都被移除，所有子组件实例被卸载
 
@@ -48,6 +49,7 @@
   当虚拟 DOM 重新渲染被触发时调用。和 renderTracked 类似，接收 debugger event 作为参数。此事件告诉你是什么操作触发了重新渲染，以及该操作的目标对象和键。
 
 ### vue 如何实现双向绑定
+
 1. v-model / .sync 实现，由 v-bind + v-on:input 构成
    v-bind: data-->UI
    v-on: UI-->data
@@ -58,6 +60,7 @@
    **25k+ compiler 如何实现**
 
 ### 通信
+
 父子：props
 子父：子 this.$emit
 爷孙： 1.两次父子通信实现
@@ -66,19 +69,103 @@
 使用 eventBus = new Vue(),事件多难以维护
 vuex、pinia
 
+#### 追问子组件能否修改父组件传来的 props
+
+不能直接改 props，会报只读。
+
+例子：子组件接受到父组件的 counter，若想实现点击子组件 counter+1 这个行为，
+**vue2 第一种方法**
+子组件`this.$emit('events-name')`，在父组件中`<child @events-name="handleAdd"/>`，本质上是由父组件中`handleAdd`函数去操作父组件的 counter
+**vue2 第二种方法**
+子组件`this.$emit('events-name',counter + 1)`
+父组件`handleAdd(v){ this.counter = v } <child @events-name="handleAdd"/>`
+**第三种方法**
+
+```js
+//fu
+<Cpage v-bind:count.sync="count" />  //vue2
+<Cpage v-model="count" />  //vue3
+//zi
+<div @click="handleCount">{{}}</div>
+props:{
+  count:Number //vue2
+  modelValue: Number //vue3
+}
+handleCount(){
+  this.$emit('update:count', this.count + 1) // vue2
+  this.$emit('update:modelValue', this.modelValue + 1) // vue3
+}
+```
+
 ### Vue 的父组件和子组件生命周期钩子执行顺序是什么
+
 渲染
 父 beforeCreate-->父 created-->父 beforeMount-->子 beforeCreate-->子 created-->子 beforeMount-->子 mounted-->父 mounted
+
 子组件更新
 父 beforeUpdate->子 beforeUpdate->子 updated->父 updated
+
 销毁
 父 beforeDestroy->子 beforeDestroy->子 destroyed->父 destroyed
 
+#### 衍生问题 Vue a 页面到 b 页面生命周期执行顺序是什么
+
+a-beforeCreated
+a-created
+a-beforeMount
+a-mounted//完成后页面出现跳转按钮
+b-beforeCreate
+b-created
+b-beforeMount
+a-beforeDestroy
+a-destroyed
+b-mounted
+
 ### key 的作用
+
 尽可能的复用 DOM 元素
 
 ### nextTick
+
 DOM 被更新完后立即调用
+
+#### 追问如何实现 nextTick
+
+```js
+var callbacks = []
+var pending = false
+function nextTick(cb, ctx) {
+  var _resolve
+  callbacks.push(function () {
+    if (cb) {
+      try {
+        cb.call(ctx)
+      } catch (e) {
+        handleError(e, ctx, 'nextTick')
+      }
+    } else if (_resolve) {
+      _resolve(ctx)
+    }
+  })
+  if (!pending) {
+    pending = true
+    timerFunc()
+  }
+  if (!cb && typeof Promise !== 'undefined') {
+    return new Promise(function (resolve) {
+      _resolve = resolve
+    })
+  }
+}
+```
+
+### vue2 为什么需要使用 vm.$set
+
+vue2 使用 object.defineProperty()数据劫持，只有 getter||setter 无法监听属性的修改删除，需要初始化对象，无法拦截对象多层嵌套，数组长度发送变化时候无法监听
+
+#### 追问 vue3 又做了哪些优化
+
+使用了 proxy api 13 种监听操作弥补了 object.defineProperty()的不足
 
 ### vue Router
 
@@ -136,3 +223,5 @@ router-view：路由视图
 #### 追问路由懒加载
 
 import('路由')
+
+### ~~

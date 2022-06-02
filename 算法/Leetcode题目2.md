@@ -293,22 +293,47 @@ const maxDepth = function (root) {
 }
 ```
 
-### 二叉树层序遍历(层序遍历==广度遍历) 102
+### 9.二叉树层序遍历(层序遍历==广度遍历) 102
+
 ```js
-var levelOrder = function(root){
-  if(!root)return[]
+var levelOrder = function (root) {
+  if (!root) return []
   const q = [root]
   const res = []
-  while(q.length){
+  while (q.length) {
     let len = q.length
     res.push([])
-    while(len--){
+    while (len--) {
       const n = q.shift()
       res[res.length - 1].push(n.val)
-      if(n.left)q.push(n.left)
-      if(n.right)q.push(n.right)
+      if (n.left) q.push(n.left)
+      if (n.right) q.push(n.right)
     }
   }
   return res
 }
+```
+
+### 10. 718. 最长重复子数组
+
+```js
+//动态规划1维数组
+function findLength(a,b){
+  const m = a.lenght
+  const n = b.length
+  const dp = Array(n+1).fill(0)
+  let res = 0
+  for(let i = 1; i<=m; i++){
+    for(let j = n; j>=1; j--){
+      if(a[i-1] == b[j-1]){
+        dp[j] = dp[j-1] + 1
+      }else{
+        dp[j] = 0
+      }
+    }
+    res = Math.max(dp[j], res)
+  }
+  return res
+}
+
 ```
