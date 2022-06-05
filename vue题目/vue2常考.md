@@ -162,6 +162,9 @@ function nextTick(cb, ctx) {
 ### vue2 为什么需要使用 vm.$set
 
 vue2 使用 object.defineProperty()数据劫持，只有 getter||setter 无法监听属性的修改删除，需要初始化对象，无法拦截对象多层嵌套，数组长度发送变化时候无法监听
+#### 追问vue2缺陷
+数组push()，pop()，shift()，unshift()，splice()，sort()，reverse()方法无法触发视图更新
+对象新增属性及删除属性无法触发视图更新
 
 #### 追问 vue3 又做了哪些优化
 

@@ -75,7 +75,7 @@ watcher通知外部组件更新
 
 MVVM：数据变化视图更新，视图变化数据更新，
 proxy 可以全面监听数据的变化，深度监听，可以知道数组变化
-Object.defineProperty 无法监听数组修改，修改了数组的7个api
+Object.defineProperty 无法监听数组修改，修改了数组的7个api，无法监听对象的新增与删除
 vue的响应式是由Object.defineProperty、proxy完成的
 
 ### 双向数据绑定原理
