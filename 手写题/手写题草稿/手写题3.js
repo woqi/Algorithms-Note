@@ -2,7 +2,6 @@
 var data = [
   { id: 0, parentId: null, text: '第一级文字' },
   { id: 1, parentId: 0, text: '第二级文字' },
-
   { id: 2, parentId: 0, text: '第三级文字' },
   { id: 3, parentId: null, text: '第四级文字' },
   { id: 4, parentId: null, text: '第五级文字' },
@@ -57,7 +56,8 @@ let createTree = function (data) {
   })
   return result
 }
-// let aa = createTree(data)
+let aa = createTree(data)
+//
 
 const address = [
   {
@@ -116,8 +116,9 @@ let flatAdd2 = function (tree, id) {
   return res
 }
 
-// let bb = flatAdd(address, 13)
-// let cc = flatAdd2(address, 13)
+let bb = flatAdd(address, 111)
+let cc = flatAdd2(address, 111)
+//
 
 let obj = {
   a: {

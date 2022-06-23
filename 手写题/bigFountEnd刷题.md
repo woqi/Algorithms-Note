@@ -16,7 +16,7 @@ pipe([times(2), times(3)])(2)
 pipe([times(2), times(3), plus(4)])(2)
 // (x * 2 - 3) / 4
 pipe([times(2), subtract(3), divide(4)])(2)
-const pipe = fn => x => fn.reduce((a, b) => b(a), x)
+const pipe = (...fn) => x => fn.reduce((a, b) => b(a), x)
 ```
 
 ### 实现 clearAllTimeout
@@ -90,40 +90,6 @@ class EventEmitter {
 }
 ```
 
-### 实现 Array.flat()
-
-```js
-//测试用例
-flatten([1,[2],[3,[4]]])
-flatten([1,[2],[3,[4]]])
-flatten([1,[2],[3,[4]])
-flatten([1,2,[3,4,[5,6,[7,8,[9,10]]]]])
-//解法1 递归
-function flatten(arr){
-  var res = []
-  for(var i = 0; i<arr.length; i++){
-    if(Array.isArray(arr[i])){
-      res = res.concat(flatten(arr[i]))
-    }else{
-      res.push(arr[i])
-    }
-  }
-  return res
-}
-//2.while 最快
-function flatten(arr){
-  while (arr.some(item=>Array.isArray(item))) {
-    arr = [].concat(...arr)
-  }
-  return arr
-}
-//3.reduce //最慢
-function flatten(arr) {
-  return arr.reduce((pre, next) => {
-    return pre.concat(Array.isArray(next) ? flatten(next) : next)
-  }, [])
-}
-```
 
 ### Promise reject 的时候自动 retry
 
@@ -199,6 +165,35 @@ function fn4() {
 throttlePromises([fn1, fn2, fn3, fn4], 2).then(data => {
   console.log('**-', data)
 })
+```
+
+### Promise.allSettled()实现
+https://bigfrontend.dev/zh/problem/implement-Promise-allSettled/discuss
+```js
+function allSettled(promises) {
+  if (promises.length === 0) {
+    return Promise.resolve([])
+  }
+  const results = []
+  let completed = 0
+  return new Promise((resolve) => {
+    for (let i = 0; i< promises.length; i++) {
+      Promise.resolve(promises[i])
+        .then(value => {
+          results[i] = { status: 'fulfilled', value }
+        })
+        .catch(reason => {
+          results[i] = { status: 'rejected', reason }
+        })
+        .finally(() => {
+          completed++
+          if (completed === promises.length) {
+            resolve(results)
+          }
+        })
+    }
+  })
+}
 ```
 
 ### 返回 Dom 最大高度

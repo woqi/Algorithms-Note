@@ -15,23 +15,43 @@ Map、Set、Class等无法响应
 修改语法有限制
 
 ```js
-Object.defineProperty(obj, 'foo', {
+let data = {foo:'hello'},vueObj = {}
+Object.defineProperty(vueObj, 'foo', {
   //读取key值时，没法读取，因设置不允许迭代
   //你迭代读取他们的key值时，无法读取，
   //因为设置了不允许迭代，不会显示在对象键中
-  enumerable: false,
+  enumerable: true,
   //防止被重新定义，设置为false将永远无法被修改
-  configurable: true,
+  configurable: false,
   //可赋值，但值不改变，不报错
   writable: false,
   get() {
     //覆盖取值行为，get返回任意值
-    return 'bar'
+    return data.foo
   },
   set(newValue) {
     //覆盖赋值行为
+    if(newValue === data.foo){return}
+    data.foo = newValue
+    document.querySelector('#app').textContent = data.foo
   },
 })
+vueObj.foo = 'nihao' 
+console.log(vueObj.foo)
+/*----*/
+let vueProxy = new Proxy(data,{
+  get(target,key){
+    return target[key]
+  },
+  set(target,key,newValue){
+    if(target[key] === newValue){return}
+    target[key] = newValue
+    document.querySelector('#app').textContent = target[key]
+
+  }
+})
+vueProxy.foo = 'nihao'
+console.log(vueProxy.foo)
 ```
 ### vue3做了哪些优化？
 虚拟dom重写，生成的虚拟dom信息更详细，

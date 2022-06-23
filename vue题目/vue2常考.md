@@ -131,11 +131,16 @@ DOM 被更新完后立即调用
 
 #### 追问如何实现 nextTick
 
+将传入的回调函数包装成异步任务，异步任务分微任务和宏任务
+nextTick 提供四种异步方法 //3这个版本vue还是这个源码
+Promise.then、MutationObserver、setImmediate、setTimeout(fn,0)
+
 ```js
 var callbacks = []
 var pending = false
 function nextTick(cb, ctx) {
   var _resolve
+  //将传入的回调函数放入数组中，后面遍历执行回调
   callbacks.push(function () {
     if (cb) {
       try {
@@ -147,23 +152,71 @@ function nextTick(cb, ctx) {
       _resolve(ctx)
     }
   })
+  //当前没有在pending的回调，就执行timerFunc函数选择当前环境优先支持的异步方法
   if (!pending) {
     pending = true
     timerFunc()
   }
+  //判断当前环境优先支持异步方法，优先选择微任务
+  //如果没有传入回调，并且当前环境支持promise，就染回promise，返回在promise.then中的DOM已经更新好了
+  //setTimeout产生4ms延迟，setImmediate在主线程执行完成后立刻执行，setImmediate在IE10和node中支持
   if (!cb && typeof Promise !== 'undefined') {
     return new Promise(function (resolve) {
       _resolve = resolve
     })
   }
+  let timerFunc
+  if (typeof Promise !== 'undefined' && isNative(Promise)) {
+    // 支持 promise
+    const p = Promise.resolve()
+    timerFunc = () => {
+      // 用 promise.then 把 flushCallbacks 函数包裹成一个异步微任务
+      p.then(flushCallbacks)
+      if (isIOS) setTimeout(noop)
+    }
+    // 标记当前 nextTick 使用的微任务
+    isUsingMicroTask = true
+
+    // 如果不支持 promise，就判断是否支持 MutationObserver
+    // 不是IE环境，并且原生支持 MutationObserver，那也是一个微任务
+  } else if (!isIE && 
+  typeof MutationObserver !== 'undefined' && (isNative(MutationObserver) || MutationObserver.toString() === '[object MutationObserverConstructor]')) {
+    let counter = 1
+    // new 一个 MutationObserver 类
+    const observer = new MutationObserver(flushCallbacks)
+    // 创建一个文本节点
+    const textNode = document.createTextNode(String(counter))
+    // 监听这个文本节点，当数据发生变化就执行 flushCallbacks
+    observer.observe(textNode, { characterData: true })
+    timerFunc = () => {
+      counter = (counter + 1) % 2
+      textNode.data = String(counter) // 数据更新
+    }
+    isUsingMicroTask = true // 标记当前 nextTick 使用的微任务
+
+    // 判断当前环境是否原生支持 setImmediate
+  } else if (typeof setImmediate !== 'undefined' && isNative(setImmediate)) {
+    timerFunc = () => {
+      setImmediate(flushCallbacks)
+    }
+  } else {
+    // 以上三种都不支持就选择 setTimeout
+    timerFunc = () => {
+      setTimeout(flushCallbacks, 0)
+    }
+  }
 }
+//
+//任务优先级 Promise---> MutationObserver---> setImmediate---> setTimeout
 ```
 
 ### vue2 为什么需要使用 vm.$set
 
 vue2 使用 object.defineProperty()数据劫持，只有 getter||setter 无法监听属性的修改删除，需要初始化对象，无法拦截对象多层嵌套，数组长度发送变化时候无法监听
-#### 追问vue2缺陷
-数组push()，pop()，shift()，unshift()，splice()，sort()，reverse()方法无法触发视图更新
+
+#### 追问 vue2 缺陷
+
+数组 push()，pop()，shift()，unshift()，splice()，sort()，reverse()方法无法触发视图更新
 对象新增属性及删除属性无法触发视图更新
 
 #### 追问 vue3 又做了哪些优化
