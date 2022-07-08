@@ -33,3 +33,11 @@ function delegate(element, eventType, selector, fn) {
 
 ```
 
+5个苦咖啡
+5个奶提子
+2个白桃冰球
+3个光明绿豆
+3个雀巢q次方
+3个方糕
+3个小布丁
+3个东北大板

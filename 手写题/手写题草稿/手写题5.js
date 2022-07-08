@@ -12,23 +12,22 @@ function unique(arr) {
   const seen = new Map()
   return arr.filter(a => !seen.has(a) && seen.set(a, 1))
 }
-let dd = unique(arr2)
+// let dd = unique(arr2)
 //默写
 function clone(data) {
   if (typeof data === 'symbol') {
     return Symbol().for(data.description)
-  }else if(typeof data != 'object'){
+  } else if (typeof data != 'object') {
     return data
-  }else if(data instanceof Array){
-    return data.map(i=>clone(i))
-  }
-  else if(data.constructor === Object){
+  } else if (data instanceof Array) {
+    return data.map(i => clone(i))
+  } else if (data.constructor === Object) {
     let res = {}
-    for(key in data){
+    for (key in data) {
       res[key] = clone(data[key])
     }
     return res
-  }else{
+  } else {
     return new data.constructor(data)
   }
 }
@@ -45,17 +44,45 @@ function componse(...funcs) {
         a(b(...args))
   )
 }
-const throttle = (fn,time)=>{
+const throttle = (fn, time) => {
   let t = null
-  return (...args) =>{
-    if(t){return}
-    fn.call(undefined,...args)
-    t = setTimeout(()=>{
+  return (...args) => {
+    if (t) {
+      return
+    }
+    fn.call(undefined, ...args)
+    t = setTimeout(() => {
       t = null
-    },time)
+    }, time)
   }
 }
+const d = () => {
+  console.log('q')
+}
+const d2 = throttle(d, 3 * 1000)
 
-
-
+const debonce = (fn, time) => {
+  let t = null
+  return (...args) => {
+    if (t) {
+      clearTimeout(t)
+    }
+    t = setTimeout(() => {
+      fn.call(undefined, ...args)
+      t = null
+    }, time)
+  }
+}
+function twoSum(nums, target) {
+  let map = new Map()
+  for (let i = 0; i < nums.length; i++) {
+    const n = nums[i]
+    const n2 = target - n
+    if(map.has(n2)){
+      return [map.get(n2), i]
+    }else{
+      map.set(n,i)
+    }
+  }
+}
 //
