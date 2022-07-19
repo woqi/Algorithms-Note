@@ -1,6 +1,5 @@
 ### 1.bfc 是什么
 块级格式上下文
-
 - 常见触发
   浮动
   绝对定位
@@ -11,7 +10,7 @@
   清除浮动
   防止垂直 margin 合并
 
-### 2.常问块级元素行内元素
+### 2.常见的块级元素行内元素
 
 ### 3.box-sizing
 box-sizing:content-box; width 实际为 content + padding + border
@@ -19,7 +18,6 @@ box-sizing:border-box; width 实际为 content
 border-box 是 ie 提出的，更好用，都是用来指定宽度的
 
 ### 4.垂直居中
-
 - 1.
 
 ```html
@@ -30,7 +28,6 @@ border-box 是 ie 提出的，更好用，都是用来指定宽度的
   </tr>
 </table>
 ```
-
 ```css
 /* 1.2 */
 .father {
@@ -39,9 +36,6 @@ border-box 是 ie 提出的，更好用，都是用来指定宽度的
 .son {
   display: table-cell;
   vertical-align: middle;
-}
-.son-cell {
-  /*  */
 }
 ```
 - 2.  father：relative
@@ -53,7 +47,6 @@ border-box 是 ie 提出的，更好用，都是用来指定宽度的
 - 5.  father: display:flex; justify-content:center; align-items:center;
 
 ### 2.垂直居中
-
 ```css
 /*flex*/
 .parent {
@@ -69,7 +62,6 @@ border-box 是 ie 提出的，更好用，都是用来指定宽度的
   width: 300px;
 }
 ```
-
 ```css
 /*absolute\margin auto\top bottom left right 0*/
 .parent {
@@ -89,7 +81,6 @@ border-box 是 ie 提出的，更好用，都是用来指定宽度的
   right: 0;
 }
 ```
-
 ```css
 /*margin-top 为child高度的一半\top 50%*/
 .parent {
@@ -108,7 +99,6 @@ border-box 是 ie 提出的，更好用，都是用来指定宽度的
   margin-top: -50px;
 }
 ```
-
 ```css
 /*translate*/
 .parent {
@@ -124,7 +114,6 @@ border-box 是 ie 提出的，更好用，都是用来指定宽度的
   transform: translate(-50%, -50%);
 }
 ```
-
 ```css
 /*inline-block*/
 .parent {
@@ -157,12 +146,10 @@ border-box 是 ie 提出的，更好用，都是用来指定宽度的
 ```
 
 ### 5.清除浮动
-
 1.  content:''; display:block; clear:both;
 2.  父元素 overflow:hidden;
 
 ### 6. 0.5px 边
-
 svg 画 0.5px
 width: 0.5px
 transform: linear-gradient(0deg, #fff, #000)

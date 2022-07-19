@@ -1,7 +1,6 @@
 const obj = { foo: 123 }
 
-
-function autorun (update) {
+function autorun(update) {
   const wrappedUpdate = () => {
     activeUpdate = wrappedUpdate
     update()
@@ -10,32 +9,26 @@ function autorun (update) {
   wrappedUpdate()
 }
 
-function convert(obj){
-  Object.keys(obj).forEach(key=>{
+function convert(obj) {
+  Object.keys(obj).forEach(key => {
     console.log('obj')
-    let internalValue = obj[key]//初始值
+    let internalValue = obj[key] //初始值
     Object.defineProperty(obj, 'foo', {
       get() {
-        console.log('getr---',internalValue)
+        console.log('getr---', internalValue)
         return internalValue
       },
       set(newValue) {
-       console.log('object',newValue)
-       internalValue = newValue
-      },
+        console.log('object', newValue)
+        internalValue = newValue
+      }
     })
-
-
   })
-
-  
 }
 
-
 convert(obj)
-obj.count ++
+obj.count++
 
-autorun(()=>{
-  console.log('yuanshi---',obj.foo)
+autorun(() => {
+  console.log('yuanshi---', obj.foo)
 })
-
