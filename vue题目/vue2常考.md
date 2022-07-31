@@ -122,8 +122,29 @@ a-destroyed
 b-mounted
 
 ### key 的作用
-
 尽可能的复用 DOM 元素
+### computed原理
+- 是什么
+是计算属性
+`computed{name:function(){}}`
+- 解决了
+适用于多个值影响一个值
+计算属性具有缓存性，值改变页面重新渲染，值没改变页面不重新渲染
+- 怎么做
+vue2底层由watch实现
+vue初始化computed中数据时会涉及Dep、Watch两个对象，Dep用于依赖收集，有个属性维护多个watch对象，更新数据循环调用每个Watch，Watch主要用于更新，watch.dirty确定是否有缓存
+vue3 底层由effect实现
+
+### watch原理
+- 是什么
+侦听器
+`watch{name:function(newVal,oldVal){}}`
+调用computed内部函数时不需要加`()`
+- 解决了
+适用于一个值引起多个值变化的情况
+适用于异步操作或开销较大的状况
+- 怎么做
+
 
 ### nextTick
 
@@ -258,21 +279,49 @@ router-view：路由视图
   6.history 需要后端支持，后端未覆盖的路由地址则返回 404，前端的 URL 必须和实际向后端发起请求的 URL 一致,
   例如请求http://www.abc.com/book/id 缺乏/book/id 后端返回 404
   hash 仅‘#’符号之前的内容会被包含在请求中
-  ``
+#### $route和$router的区别
+$route是“路由信息对象”，跳转的路由对象，包括path，params，hash，query，fullPath，matched，name等路由信息参数。
+而$router是“路由实例”对象包括了路由的跳转方法，钩子函数等
+#### 路由几种传参
+- query方法传入的参数使用this.$route.query接受
+1.query传参可以使用path,也可以使用name;
+2.query相当于get请求，参数拼接在路由的后面；
+3.query是拼接在路由后面的，因此有没有没关系；
+
+- params方式传入的参数使用this.$route.params接受
+1.params是路由的一部分，因此使用params传参，路由上必须写对应的参数；
+2.进行路由跳转的时候要传值，否则会跳转页面失败；
+3.params只能使用name来传参；
+4.params相当于post请求，参数对用来说是不可见的
+
+#### 如何实现登录控制
+```js
+router.beforeEach((to,from,next)=>{
+  if(to.path==='login')return next()
+  if(未登录)return next('/login')
+  next()
+})
+```
 
 #### 追问导航守卫
-
 路由设置钩子
 
 - 全局进入、离开、解析路由三个时期都做了什么
-  router.beforeEach 进入
+  router.beforeEach(to,from,next) 进入 
+  to即将要进入的目标，
+  from正要离开的路由，
+  next 必须调用，否则不能进入路由，next(false)取消进入，next('/goods') || next({path:''}) || next({name:''})
+  ```js
+  if(登录 || to.name === 'login'){ next() } // 登录，或者将要前往login页面的时候，就允许进入路由
+  ```
+
   router.beforeResolve 解析
   router.afterEach 离开
 - 路由独享 router.beforeEnter
 - 组件内的守卫
   beforeRouteEnter 路由验证前被调用组件实例并未创建 通过 next 回调访问组件实例
-  beforeRouteUpdate 路由改变 组件被复用调用
-  beforeRouteLeave 离开渲染该组件
+  beforeRouteUpdate 路由改变 组件被复用调用，可访问组件实例
+  beforeRouteLeave 离开渲染该组件，可访问组件实例
 - 实际执行顺序
   失活组件 beforeRouteLeave --> 全局 beforeEach --> 重用的组件里调用 beforeRouteUpdate --> 路由独享 beforeEnter --> 激活的组件里调用 beforeRouteEnter --> 全局 beforeResolve --> 全局 afterEach
 
@@ -280,4 +329,101 @@ router-view：路由视图
 
 import('路由')
 
-### ~~
+### vuex如何使用
+new Vue中注入vuex，
+```js
+//mutation-types.js
+export const ADD = 'ADD'
+//store.js
+const store = new Vuex.Store({
+  state: {
+    count: 0
+  },
+  mutations: {
+    add(state, n = 1) {
+      state.count += n
+    },
+    [ADD](state){}
+  },
+  actions:{
+    syncAdd({state}){
+      setTimeout(()=>{ 
+          state.count ++ 
+      },1000)
+    }
+  },
+  getters:{//类似计算属性
+    doubleCount(state){
+      return state.count * 2
+    }
+  }
+})
+```
+state: this.$store.state.xxx\mapState
+getters: this.$store.getters.xxx\mapGetters
+Mutation: this.$store.commit('xxx',可选)\mapMutation
+Actions: this.$store.dispatch('aaa')\mapActions
+module: 需写namespaces
+
+#### vuex是通过什么方式提供响应式数据的
+`new Vue({})`
+#### getters如何实现
+```js
+/*store.getters实现*/
+const MyStore = function (options) {
+  const { state = {}, mutations = {}, getters = {} } = options
+  const computed = {}
+  const store = this
+  store.getters = {}
+  for (let [key, fn] of Object.entries(getters)) {
+    computed[key] = function () {
+      return fn(store.state, store.getters)
+    }
+    Object.defineProperties(store.getters, key, {
+      get: function () {
+        return store._vm[key] // 拿的computed中数据
+      }
+    })
+  }
+  this._vm = new Vue({
+    data: {
+      $$state: state
+    },
+    computed
+  })
+}
+```
+
+#### beforeCreate中混入$store
+
+### vue响应式原理
+data通过observer转换为getter、setter的形式追踪变化，
+getter被读取时触发watcher，将watcher添加到依赖中，
+**数据变化**时会触发setter，
+setter通知依赖，
+依赖通知watcher，
+watcher通知外部组件更新
+
+MVVM：数据变化视图更新，视图变化数据更新，
+proxy 可以全面监听数据的变化，深度监听，可以知道数组变化
+Object.defineProperty 无法监听数组修改，修改了数组的7个api，无法监听对象的新增与删除
+vue的响应式是由Object.defineProperty、proxy完成的
+
+### 自定义指令
+在需要对DOM元素进行底层操作时用到
+```js
+app.directive('zidingyi',{//全局自定义指令
+  bind//初始化
+  inserted(el,binding){ //挂载后自动执行
+  //el 接收的dom元素，binding传入的值
+    //xxx
+  }
+  update//vnode更细后使用
+})
+//vue3生命周期改了
+```
+### vue2的坑点（外包爱问）
+vue2对初学者更友好 mixin 层级数据来源不清晰
+table组件数据量过大存在卡顿，需要做虚拟滚动
+
+ 

@@ -37,5 +37,10 @@ type AAType = {aa:string}&BBType
 
 const aa:AAType = {aa:'11', bb:'22'}
 ```
-
+### 枚举在什么场景下使用
+枚举定义一组命名常量
+```ts
+enum Dir{up, down, left,right}
+function fn(direction: Dir){}
+```
 

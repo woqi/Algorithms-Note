@@ -11,7 +11,11 @@
   防止垂直 margin 合并
 
 ### 2.常见的块级元素行内元素
-
+● 行内元素有：a b span img input select strong
+● 块级元素有：div ul ol li dl dt dd h1 h2 h3 h4… p
+● 空元素：<br> <hr> <img> <input> <link> <meta>
+● 行内元素不可以设置宽高，不独占一行
+● 块级元素可以设置宽高，独占一行
 ### 3.box-sizing
 box-sizing:content-box; width 实际为 content + padding + border
 box-sizing:border-box; width 实际为 content
